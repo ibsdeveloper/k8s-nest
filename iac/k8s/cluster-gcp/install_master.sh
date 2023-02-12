@@ -54,12 +54,12 @@ systemctl enable kubelet && systemctl start kubelet
 ### init k8s
 rm /root/.kube/config
 kubeadm reset -f
-kubeadm init --kubernetes-version=${KUBE_VERSION} --ignore-preflight-errors=NumCPU --skip-token-print
+kubeadm init --kubernetes-version=1.20.0 --ignore-preflight-errors=NumCPU --skip-token-print --apiserver-advertise-address=0.0.0.0 --apiserver-cert-extra-sans=10.128.0.55,34.27.146.11  --pod-network-cidr=10.244.0.0/16
 
 mkdir -p ~/.kube
 sudo cp -i /etc/kubernetes/admin.conf ~/.kube/config
 
-kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+kubectl apply -f https://github.com/ibsdeveloper/weave/releases/download/latest_release/weave-daemonset-k8s-1.11.yaml
 
 echo
 echo "### COMMAND TO ADD A WORKER NODE ###"
